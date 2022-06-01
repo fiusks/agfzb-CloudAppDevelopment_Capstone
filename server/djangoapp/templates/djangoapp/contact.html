@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
     <title>Dealership Review</title>
+
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -14,11 +14,26 @@
       href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css"
       rel="stylesheet"
     />
+    {% load static %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'djangoapp/contact.css' %}"
+    />
+
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
   </head>
-
   <body>
-    {% include './navbar.html' %} PORRA
+    {% include './navbar.html' %}
+    <div
+      class="d-flex justify-content-center align-items-center text-container"
+    >
+      <div>
+        <h1 class="centered-text-my">Contact Us</h1>
+        <h3><b>Phone:</b> +55 21 1234-5678</h3>
+        <h3><b>Addres:</b> Coding Street, 404 - DjangoLand - Cloud/Brazil</h3>
+      </div>
+    </div>
   </body>
 </html>
