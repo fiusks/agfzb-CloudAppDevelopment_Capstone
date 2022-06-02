@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, get_dealers_by_state_from_cf
+from .models import CarModel
+from .restapis import post_request, get_dealers_from_cf, get_dealer_reviews_from_cf, get_dealers_by_state_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -113,10 +113,32 @@ def get_dealer_details(request, dealerId):
         context['dealer_reviews'] = reviews
     return render(request, 'djangoapp/dealer_details.html', context)
 
-# Create a `get_dealer_details` view to render the reviews of a dealer
-# def get_dealer_details(request, dealer_id):
-# ...
 
-# Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
+def add_review(request, dealerId):
+    context = {}
+    url = "https://1d0da0bd.us-south.apigw.appdomain.cloud/api/review?dealerId=" + \
+        str(dealerId)
+    # dealer = get_dealer_reviews_from_cf(url, dealerId)
+    # context["dealer"] = dealer
+    review = dict()
+    review['name'] = "My Name"
+    review['dealership'] = dealerId
+    review['review'] = "My first review"
+    review['purchase'] = False
+    if review['purchase']:
+        review['purchsae_date'] = "input"
+        review['car_make'] = "input"
+        review['car_model'] = "input"
+        review['car_year'] = "input"
+
+    json_payload = dict()
+
+    json_payload = review
+
+    # if request.method == 'POST':
+    if request.user.is_authenticated:
+        newPost = post_request(url, json_payload)
+        context['dealer_reviews'] = newPost
+    return render(request, "djangoapp/dealer_details.html", context)
+    # else:
+    #     return render(request, 'djangoapp/add_review.html', context)
