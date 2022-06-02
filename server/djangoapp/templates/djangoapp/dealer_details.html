@@ -18,6 +18,7 @@
           <th data-field="id">ID</th>
           <th data-field="dealership">Dealership</th>
           <th data-field="review">Review</th>
+          <th data-field="review">Sentiment</th>
           <th data-field="purchase">Purchase</th>
           <th data-field="purchase_date">Purchase Date</th>
           <th data-field="car_make">Maker</th>
@@ -31,6 +32,7 @@
           <td>{{review.id}}</td>
           <td><a>{{review.dealership}}</a></td>
           <td>{{review.review}}</td>
+          <td>{{review.sentiment}}</td>
           <td>{{review.purchase}}</td>
           {% if review.purchase %}
           <td>{{review.purchase_date}}</td>
