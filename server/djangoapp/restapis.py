@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import requests
 import json
 from .models import CarDealer, DealerReview
@@ -86,6 +87,7 @@ def analyze_review_sentiments(dealerreview):
 def get_dealer_reviews_from_cf(url, dealerId):
     results = []
     json_result = get_request(url+"?dealerId="+str(dealerId))
+
     if 'error' in json_result:
         return {"error": "User not found"}
 
@@ -94,23 +96,30 @@ def get_dealer_reviews_from_cf(url, dealerId):
     for dealer_review in reviews:
         if(dealer_review['purchase'] == False):
             review_obj = DealerReview(
-                dealership=dealer_review["dealership"],
-                name=dealer_review["name"],
-                purchase=dealer_review["purchase"],
-                review=dealer_review["review"],
-                sentiment=analyze_review_sentiments(dealer_review['review']))
-        else:
-            review_obj = DealerReview(
-                dealership=dealer_review["dealership"],
-                name=dealer_review["name"],
-                purchase=dealer_review["purchase"],
-                review=dealer_review["review"],
                 id=dealer_review["id"],
+                dealership=dealer_review["dealership"],
+                name=dealer_review["name"],
+                purchase=dealer_review["purchase"],
+                review=dealer_review["review"],
+                sentiment=analyze_review_sentiments(dealer_review['review']),
+                purchase_date="",
+                car_make="",
+                car_model="",
+                car_year="")
+        else:
+            print('entrei no else')
+            review_obj = DealerReview(
+                id=dealer_review["id"],
+                dealership=dealer_review["dealership"],
+                name=dealer_review["name"],
+                purchase=dealer_review["purchase"],
+                review=dealer_review["review"],
+                sentiment=analyze_review_sentiments(dealer_review['review']),
                 purchase_date=dealer_review["purchase_date"],
                 car_make=dealer_review["car_make"],
                 car_model=dealer_review["car_model"],
                 car_year=dealer_review["car_year"],
-                sentiment=analyze_review_sentiments(dealer_review['review'])
+
             )
 
         results.append(review_obj)

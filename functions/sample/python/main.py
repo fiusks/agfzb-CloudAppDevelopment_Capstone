@@ -13,6 +13,7 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 params = {"apiKey": "NY3lB4ceEKimktL5qQ-H1y7jLVmw_uVrwzedWdV2PwOS",
           "url": "https://apikey-v2-2inqni6tqfn1mzqxhlrve4q67tbch3oeyr6dwaif20zr:b6e55f116e94747c60d841fde09ece41@db29386c-4db3-478f-bbcd-f0469763ece3-bluemix.cloudantnosqldb.appdomain.cloud",
+          'dealerId': 45,
           "name": "Coding Partners",
           "dealership": "45",
           "review": "It is awesome",
@@ -37,7 +38,7 @@ def main(dict):
     mappedList = map(lambda item: {
         "id": item['doc'].get('id'),
         "name": item['doc']['name'],
-        "dealership": item['doc']['dealership'],
+        "dealership": int(item['doc']['dealership']),
         "review": item['doc']['review'],
         "purchase": item['doc']['purchase'],
         "purchase_date": item['doc'].get('purchase_date'),
@@ -45,16 +46,17 @@ def main(dict):
         "car_model": item['doc'].get('car_model'),
         "car_year": item['doc'].get('car_year'),
     }, response.result['rows'])
+
     filterList = filter(
-        lambda list: list['dealership'] == 502, list(mappedList))
-    result = {"entries": list(filterList)}
-    print(len(result["entries"]))
+        lambda list: list['dealership'] == params['dealerId'], list(mappedList))
+    # result = {"entries": list(filterList)}
+    print(list(filterList))
 
-    if len(result["entries"]) == 0:
+    # if len(result["entries"]) == 0:
 
-        return {"message": "No match"}
-    else:
-        return result
+    #     return {"message": "No match"}
+    # else:
+    #     return result
 
 
 main(params)
