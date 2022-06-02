@@ -1,18 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Dealership Review</title>
     {% load static %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+  </head>
 
-    <body>
-
-    <!--Add a nav bar here -->
-
-    <!-- Add reviews as cards -->
-
-    </body>
-
+  <body>
+    {% include './navbar.html' %}
+    <table class="table" id="table" data-filter-control="true">
+      <thead>
+        <tr>
+          <th data-field="id">ID</th>
+          <th data-field="dealership">Dealership</th>
+          <th data-field="review">Review</th>
+          <th data-field="purchase">Purchase</th>
+          <th data-field="purchase_date">Purchase Date</th>
+          <th data-field="car_make">Maker</th>
+          <th data-field="car_model">Model</th>
+          <th data-field="car_year">Year</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for review in dealer_reviews %}
+        <tr>
+          <td>{{review.id}}</td>
+          <td><a>{{review.dealership}}</a></td>
+          <td>{{review.review}}</td>
+          <td>{{review.purchase}}</td>
+          {% if review.purchase %}
+          <td>{{review.purchase_date}}</td>
+          <td>{{review.car_make}}</td>
+          <td>{{review.car_model}}</td>
+          <td>{{review.car_year}}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% include './footer.html' %}
+  </body>
 </html>
