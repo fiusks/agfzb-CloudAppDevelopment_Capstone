@@ -4,7 +4,7 @@ from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson import NaturalLanguageUnderstandingV1
-from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions, EntitiesOptions, KeywordsOptions
+from ibm_watson.natural_language_understanding_v1 import Features, SentimentOptions
 
 
 def get_request(url, **kwargs):
@@ -35,9 +35,8 @@ def get_request(url, **kwargs):
 def post_request(url, json_payload, **kwargs):
     response = requests.post(url, params=kwargs,  headers={
                              'Content-Type': 'application/json', 'X-Debug-Mode': 'true'}, json=json_payload)
-    print(json.dumps(json_payload, indent=4))
-    print(response)
-    return response
+    json_data = json.loads(response.text)
+    return json_data
 
 
 def get_dealers_from_cf(url):
@@ -84,12 +83,12 @@ def analyze_review_sentiments(dealerreview):
     return sentiment
 
 
-analyze_review_sentiments("This dealer is very good. I'm excited.")
-
-
 def get_dealer_reviews_from_cf(url, dealerId):
     results = []
     json_result = get_request(url+"?dealerId="+str(dealerId))
+    if 'error' in json_result:
+        return {"error": "User not found"}
+
     reviews = json_result["review"]
 
     for dealer_review in reviews:
