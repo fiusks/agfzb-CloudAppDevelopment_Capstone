@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import requests
 import json
 from .models import CarDealer, DealerReview
