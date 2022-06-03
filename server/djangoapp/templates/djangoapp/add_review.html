@@ -69,7 +69,7 @@
           <div class="form-group">
             <label for="car"><b>Select your car (model/maker/year)</b></label>
             <br />
-            <select name="car" id="car" class="form-select" required>
+            <select name="car" id="car" class="form-select">
               <option selected></option>
               {% for car in cars %}
               <option value="{{car.id}}">
@@ -82,16 +82,13 @@
             <label for="purchasedate"><b>Select Your Purchase Date</b></label>
             <input
               class="date-own form-control"
-              type="text"
+              type="date"
               name="purchasedate"
               id="purchasedate"
             />
           </div>
         </div>
 
-        {% if message %}
-        <div class="alert alert-warning">{{ message }}</div>
-        {% endif %}
         <button type="submit" class="btn btn-primary">Add Review</button>
         <a
           href="{% url 'djangoapp:dealer_details' dealer.id%}"
@@ -108,7 +105,12 @@
   });
 </script>
 <script>
+  const requiredField = document.getElementById("car");
+  const formOptions = document.getElementById("myDIV");
+  const puchaseDate = document.getElementById("purchasedate");
   function validate() {
-    document.getElementById("myDIV").classList.toggle("showHide");
+    formOptions.classList.toggle("showHide");
+    requiredField.toggleAttribute("required");
+    puchaseDate.toggleAttribute("required");
   }
 </script>
