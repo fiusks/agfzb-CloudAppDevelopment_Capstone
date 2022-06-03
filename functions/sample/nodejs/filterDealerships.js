@@ -7,7 +7,7 @@ const { IamAuthenticator } = require("ibm-cloud-sdk-core");
 params = {
   apiKey: "NY3lB4ceEKimktL5qQ-H1y7jLVmw_uVrwzedWdV2PwOS",
   url: "https://apikey-v2-2inqni6tqfn1mzqxhlrve4q67tbch3oeyr6dwaif20zr:b6e55f116e94747c60d841fde09ece41@db29386c-4db3-478f-bbcd-f0469763ece3-bluemix.cloudantnosqldb.appdomain.cloud",
-  st: "CA",
+  dealerId: 15,
 };
 async function main(params) {
   const authenticator = new IamAuthenticator({
@@ -40,18 +40,34 @@ async function main(params) {
         full_name,
       };
     });
-    if (params.state) {
-      const filteredList = listAll.filter(
-        (dealer) => dealer.st === params.state
+
+    function getFilteredList(filterName, value) {
+      const appliedFilter = listAll.filter(
+        (dealer) => String(dealer[filterName]) === String(value)
       );
-      return {
-        dealerships: filteredList,
-      };
+      return appliedFilter[0];
+    }
+
+    filteredList = {};
+    if (params?.state) {
+      filteredList = getFilteredList("st", params.state);
+    } else if (params.dealerId) {
+      filteredList = getFilteredList("id", params.dealerId);
     } else {
+      filteredList = listAll;
+    }
+
+    if (!Object.keys(filteredList).length) {
+      console.log("entrei");
       return {
-        dealerships: listAll,
+        error: "No match",
       };
     }
+    const result = { dealership: filteredList };
+    console.log(filteredList);
+    return {
+      result,
+    };
   } catch (error) {
     return error;
   }

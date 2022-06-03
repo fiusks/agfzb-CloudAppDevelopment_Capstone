@@ -34,10 +34,11 @@ def get_request(url, **kwargs):
 
 
 def post_request(url, json_payload, **kwargs):
+    print(json_payload)
     response = requests.post(url, params=kwargs,  headers={
-                             'Content-Type': 'application/json', 'X-Debug-Mode': 'true'}, json=json_payload)
-    json_data = json.loads(response.text)
-    return json_data
+        'Content-Type': 'application/json', 'X-Debug-Mode': 'true'}, json=json_payload)
+
+    return response
 
 
 def get_dealers_from_cf(url):
@@ -53,6 +54,10 @@ def get_dealers_from_cf(url):
     return results
 
 
+get_dealers_from_cf(
+    "https://1d0da0bd.us-south.apigw.appdomain.cloud/api/dealership")
+
+
 def get_dealers_by_state_from_cf(url, state):
     results = []
     json_result = get_request(url+"?state="+str(state))
@@ -64,6 +69,21 @@ def get_dealers_by_state_from_cf(url, state):
                                st=dealer["st"], zip=dealer["zip"])
         results.append(dealer_obj)
     return results
+
+
+def get_dealer_by_id_from_cf(id):
+    url = "https://1d0da0bd.us-south.apigw.appdomain.cloud/api/dealership"
+    fullUrl = url+"?dealerId="+str(id)
+    json_result = get_request(fullUrl)
+    dealer = json_result['dealerships']
+
+    if json_result:
+        dealer_obj = CarDealer(address=dealer["address"], city=dealer["city"], full_name=dealer["full_name"],
+                               id=dealer["id"], lat=dealer["lat"], long=dealer["long"],
+                               short_name=["short_name"],
+                               st=dealer["st"], zip=dealer["zip"])
+
+    return dealer_obj
 
 
 def analyze_review_sentiments(dealerreview):
@@ -84,9 +104,10 @@ def analyze_review_sentiments(dealerreview):
     return sentiment
 
 
-def get_dealer_reviews_from_cf(url, dealerId):
+def get_dealer_reviews_from_cf(id):
     results = []
-    json_result = get_request(url+"?dealerId="+str(dealerId))
+    url = "https://1d0da0bd.us-south.apigw.appdomain.cloud/api/review"
+    json_result = get_request(url+"?dealerId="+str(id))
 
     if 'error' in json_result:
         return {"error": "User not found"}
@@ -107,7 +128,7 @@ def get_dealer_reviews_from_cf(url, dealerId):
                 car_model="",
                 car_year="")
         else:
-            print('entrei no else')
+
             review_obj = DealerReview(
                 id=dealer_review["id"],
                 dealership=dealer_review["dealership"],
