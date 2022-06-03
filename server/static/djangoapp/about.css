@@ -1,6 +1,6 @@
-.text-container{
-    height: 90%;
-}
-.centered-text-my{
-    width: 45%;
+.about-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
