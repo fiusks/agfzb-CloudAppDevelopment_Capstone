@@ -1,38 +1,12 @@
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Dealership Review</title>
+{% extends 'djangoapp/base.html' %} {% block content %}
 
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link
-      href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css"
-      rel="stylesheet"
-    />
-    {% load static %}
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'djangoapp/about.css' %}"
-    />
+<div
+  class="container-fluid d-flex flex-column justify-content-stretch align-items-center my-auto"
+>
+  <h1 class="w-50">
+    Welcome to Best Cars dealership, home to the best cars in North America. We
+    sell domestic and imported cars at reasonable prices.
+  </h1>
+</div>
 
-    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
-    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
-  </head>
-  <body>
-    {% include './navbar.html' %}
-    <div
-      class="d-flex justify-content-center align-items-center text-container"
-    >
-      <h1 class="centered-text-my">
-        Welcome to Best Cars dealership, home to the best cars in North America.
-        We sell domestic and imported cars at reasonable prices.
-      </h1>
-    </div>
-  </body>
-</html>
+{% endblock content %}

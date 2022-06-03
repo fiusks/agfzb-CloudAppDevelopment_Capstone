@@ -16,6 +16,12 @@
     />
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    {% load static %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'djangoapp/generic.css' %}"
+    />
   </head>
 
   <body>
@@ -35,7 +41,11 @@
         {% for dealer in dealership_list %}
         <tr>
           <td>{{dealer.id}}</td>
-          <td><a>{{dealer.full_name}}</a></td>
+          <td>
+            <a href="{% url 'djangoapp:dealer_details' dealer.id %}"
+              >{{dealer.full_name}}</a
+            >
+          </td>
           <td>{{dealer.city}}</td>
           <td>{{dealer.address}}</td>
           <td>{{dealer.zip}}</td>
@@ -45,5 +55,10 @@
       </tbody>
     </table>
   </body>
-  {% include './footer.html' %}
 </html>
+
+<script>
+  $(function () {
+    $("#table").bootstrapTable();
+  });
+</script>

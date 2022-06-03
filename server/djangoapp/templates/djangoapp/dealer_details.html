@@ -3,55 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <title>Dealership Review</title>
-    {% load static %}
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link
+      href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    {% load static %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'djangoapp/generic.css' %}"
+    />
   </head>
 
   <body>
-    {% include './navbar.html' %} {%if 'error' in dealer_reviews%}
-    <h1>Error 404</h1>
+    {% include './navbar.html' %} {% if user.is_authenticated %}
+    <a
+      class="btn btn-primary w-100"
+      href="{% url 'djangoapp:add_review' dealer.id %}"
+      >Add Review</a
+    >
+    {%endif%} {%if 'error' in dealer_reviews%}
+    <h1>No review found</h1>
     {%else%}
-    <table class="table table-hover text-center w-100" id="table">
-      <thead class="thead-light">
-        <tr>
-          <th data-field="id">ID</th>
-          <th data-field="dealership">Dealership</th>
-          <th data-field="review">Review</th>
-          <th data-field="review">Sentiment</th>
-          <th data-field="purchase">Purchase</th>
-          <th>Details</th>
-        </tr>
-      </thead>
-      <tbody>
+    <div class="container">
+      <div class="card-columns mt-5">
         {% for review in dealer_reviews %}
-        <tr>
-          <td>{{review.id}}</td>
-          <td><a>{{review.dealership}}</a></td>
-          <td>{{review.review}}</td>
-          <td>{{review.sentiment}}</td>
-          <td>{{review.purchase}}</td>
-          {%if review.purchase%}
-          <td>
-            <button
-              type="button"
-              class="btn btn-primary"
-              data-toggle="collapse"
-              data-target="#collapseExample"
-              href="#collapseExample"
-            >
-              Get details
-            </button>
-          </td>
-          {% else%}
-          <td>Not Purchased</td>
-          {%endif%}
-        </tr>
-        {%endfor%}
-      </tbody>
-    </table>
-    {%endif%} {% include './footer.html' %}
+        <div class="card" style="width: 350px; height: 200px">
+          <img
+            width="40px"
+            src="{% static 'media/emoji/'%}{{review.sentiment}}.png"
+            alt="{{review.sentiment}} sentiment"
+            class="card-img-left"
+          />
+          <div class="card-body">
+            {%if review.purchase%}
+            <div class="card-title">
+              <h4>{{review.car_make}}, {{review.car_model}}</h4>
+            </div>
+            <div class="card-title">
+              <h5><b>{{review.car_year}}</b></h5>
+            </div>
+            {%endif%}
+            <div class="card-text">{{review.review}}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {%endif%}
   </body>
 </html>

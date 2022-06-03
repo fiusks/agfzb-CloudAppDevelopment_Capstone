@@ -1,15 +1,21 @@
-<footer class="footer">
-  <div>
-    <nav class="navbar navbar-dark bg-dark text-white">
-      <div class="container-fluid">
-        <div class="nav navbar-nav navbar-right">CODING CARS DEALERSHIPS ©</div>
-        <div class="navbar-header">
-          <a class="navbar-brand" href="{% url 'djangoapp:about' %}">ABOUT</a>
-          <a class="navbar-brand" href="{% url 'djangoapp:contact' %}"
-            >CONTACT</a
-          >
+<html>
+  <head>
+    {% load static %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'djangoapp/generic.css' %}"
+    />
+  </head>
+  <body>
+    <footer class="footer">
+      <nav class="navbar navbar-dark bg-dark text-white">
+        <div class="container-fluid">
+          <div class="nav navbar-nav navbar-right" style="font-size: 20px">
+            CODING CARS DEALERSHIPS ©
+          </div>
         </div>
-      </div>
-    </nav>
-  </div>
-</footer>
+      </nav>
+    </footer>
+  </body>
+</html>

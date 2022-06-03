@@ -2,80 +2,113 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <title>Dealership Review</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link
+      href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     {% load static %}
     <link
       rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      type="text/css"
+      href="{% static 'djangoapp/addreview.css' %}"
     />
+
     <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"
       rel="stylesheet"
+      type="text/css"
+      href="{% static 'djangoapp/generic.css' %}"
     />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+    <style>
+      .showHide {
+        display: none;
+      }
+    </style>
   </head>
   <body>
-    <!-- <div class="container-fluid">
-      <h3>Add a review about <b>{{dealer.full_name}}</b></h3>
-      <form>
+    {% include './navbar.html' %}
+    <div class="container-fluid">
+      <h3 class="mt-4">Add a review about <b>{{dealer.full_name}}</b></h3>
+      <form action="{% url 'djangoapp:add_review' dealer.id%}" method="post">
+        {% csrf_token %}
         <div class="form-group">
-          <div class="mb-3">
-            <label for="content"><b>Enter the review content: </b></label>
-            <textarea
-              class="form-control"
-              id="content"
-              name="content"
-              rows="2"
-              required
-            ></textarea>
+          <label for="content"><b>Share your review with us!</b></label>
+          <textarea
+            class="form-control"
+            id="content"
+            name="content"
+            rows="2"
+            required
+          ></textarea>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            name="purchasecheck"
+            id="purchasecheck"
+            onclick="validate()"
+          />
+          <label class="form-check-label" for="purchasecheck">
+            Has purchased the car from {{dealer.full_name}} ?
+          </label>
+          <label class="text-muted"
+            >(select purchased car information below if checked)</label
+          >
+        </div>
+        <div id="myDIV" class="showHide">
+          <div class="form-group">
+            <label for="car"><b>Select your car (model/maker/year)</b></label>
+            <br />
+            <select name="car" id="car" class="form-select" required>
+              <option selected></option>
+              {% for car in cars %}
+              <option value="{{car.id}}">
+                {{car.name}}-{{car.maker.name}}-{{ car.year|date:"Y" }}
+              </option>
+              {% endfor %}
+            </select>
           </div>
-
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              name="purchasecheck"
-              id="purchasecheck"
-            />
-            <label class="form-check-label" for="purchasecheck">
-              Has purchased the car from {{dealer.full_name}} ?
-            </label>
-            <label class="text-muted"
-              >(select purchased car information below if checked)</label
-            >
-          </div>
-
-          <div class="mb-3">
-            <label for="car"><b>Select your car (model-make-year):</b></label>
-                          <select name="car" id="car" class="form-select" required>
-                              {% for car in cars %}
-                              <option selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year|date:"Y" }}</option>
-                              {% endfor %}
-                          </select>
-          </div>
-
-          <div class="mb-3">
-            <label for="purchasedate"><b>Select Your Purchase Date: </b></label>
+          <div class="form-group w-100">
+            <label for="purchasedate"><b>Select Your Purchase Date</b></label>
             <input
               class="date-own form-control"
-              style="width: 300px"
               type="text"
               name="purchasedate"
               id="purchasedate"
             />
           </div>
         </div>
-        {% csrf_token %}
-        <div>
-          <button class="btn btn-primary" type="submit">Submit</button>
-        </div>
-        {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-warning" role="alert">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
+
+        {% if message %}
+        <div class="alert alert-warning">{{ message }}</div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Add Review</button>
+        <a
+          href="{% url 'djangoapp:dealer_details' dealer.id%}"
+          class="btn btn-secundary"
+          >Cancel</a
+        >
       </form>
-    </div> -->
+    </div>
   </body>
 </html>
+<script type="text/javascript">
+  $(".date-own").datepicker({
+    format: "mm/dd/yyyy",
+  });
+</script>
+<script>
+  function validate() {
+    document.getElementById("myDIV").classList.toggle("showHide");
+  }
+</script>
